@@ -4,7 +4,7 @@ class CreateEvents < ActiveRecord::Migration[6.0]
       t.string :name
       t.string :description
       t.datetime :date
-      t.integer :creater_id
+      t.integer :creator_id
 
       t.timestamps
     end

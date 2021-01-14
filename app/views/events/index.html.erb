@@ -1,12 +1,12 @@
-<h1>Here is the List of All Events</h1>
+<h1>All Events</h1>
 
 <% if !Event.any? %>
   <h2>No events</h2>
 <% else %>
-  <div >
+  <div class="upcoming-cont">
     <% if @upcoming.any? %>
       <h2>Upcoming Events</h2>
-      <ul>
+      <ul class = "upcoming">
         <% @upcoming.each do |e| %>
             <li>
               <% if session[:current_user] %>
