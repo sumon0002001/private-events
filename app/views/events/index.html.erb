@@ -1,0 +1,27 @@
+<h1>Here is the List of All Events</h1>
+
+<% if !Event.any? %>
+  <h2>No events</h2>
+<% else %>
+  <div >
+    <% if @upcoming.any? %>
+      <h2>Upcoming Events</h2>
+      <ul>
+        <% @upcoming.each do |e| %>
+            <li>
+              <% if session[:current_user] %>
+                <%= link_to  e.name, event_path(e.id) %>
+              <% else %>
+                <%= link_to  e.name, sign_in_path %>
+              <% end %>
+              <div>
+                <%= content_tag(:p, "Event Date: #{e.date.localtime.strftime("%m/%d/%Y")} Time: #{e.date.localtime.strftime("%H:%M")}", class: "date-time") %>
+              </div>
+            </li>
+        <%end%>
+      </ul>
+    <% end %>
+  </div>
+
+ 
+<% end %>
