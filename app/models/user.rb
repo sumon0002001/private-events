@@ -1,4 +1,4 @@
 class User < ApplicationRecord
-    def index
-    end
+    has_many :events, foreign_key: :creator_id, class_name: 'Event'
+    
 end
