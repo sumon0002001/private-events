@@ -22,6 +22,23 @@
       </ul>
     <% end %>
   </div>
-
- 
+  <div class = "past-cont">
+   <% if @past.any? %>
+    <h2>Past Events</h2>
+    <ul class= "past">
+     <%past.each do |e| %>
+      <li>
+        <% if session[:current_user] %>
+          <%= link_to e.name, event_path()  %>
+        <% else %>
+        <%= link_to e.name, sign_in_path %>
+        <% end%>
+      <div>
+        <%= content_tag(:p, "Event date: #{e.date.localtime.strftime("%m/%d/%Y")} Time: #{e.date.localtime.strftime("%H:%M")}", class: "date-time") %>
+      </div>
+      </li>
+    <%end %>
+   </ul>
+  <%end%>  
+  </div>
 <% end %>
