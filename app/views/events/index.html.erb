@@ -26,7 +26,7 @@
    <% if @past.any? %>
     <h2>Past Events</h2>
     <ul class= "past">
-     <%past.each do |e| %>
+     <% @past.each do |e| %>
       <li>
         <% if session[:current_user] %>
           <%= link_to e.name, event_path()  %>
