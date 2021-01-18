@@ -20,7 +20,7 @@ class EventsController < ApplicationController
 
   def create
     user = User.find(session[:current_user]['id'])
-    @event = user.events.build(event_params)
+    @event = user.events.build(events_helper)
 
     if @event.save
       redirect_to events_path
