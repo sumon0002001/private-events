@@ -6,7 +6,7 @@
 </div>
 
 <% if @user.attended_events.none? && @my_events.none?%>
-  <h3>You don't have any Events</h3>
+  <h3>No Events have been found for you.</h3>
 <% else %>
   <% if @upcoming.any? %>
     <div class="upcoming-cont">
@@ -24,10 +24,9 @@
     </div>
   <% end %>
 
-
   <% if @past.any? %>
     <div class="past-cont">
-      <h2>Past Events</h2>
+      <h2>Past Events are listed here</h2>
       <ul class="events">
         <% @attended_events.each do |e| %>
           <% if e.date.localtime.strftime("%m/%d/%Y %H:%M") < @date %>
@@ -41,6 +40,7 @@
     </div>
   <% end %>
 <% end %>
+
 
 <% if @my_events.any? %>
   <div class="my-events-cont">
