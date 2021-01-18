@@ -1,8 +1,9 @@
 class Event < ApplicationRecord
-  belongs_to :creator, class_name: 'User', foreign_key: :creator_id
+  validates :title, :description, :date, :location, presence: true
+  validates :title, uniqueness: true
   has_many :attendances
-  has_many :attendee, through: :attendances, source: :user
-
-  scope :upcoming, -> { where('date >= ?', DateTime.now) }
-  scope :past, -> { where('date < ? ', DateTime.now) }
+  has_many :attendees, through: :attendances, source: :user, dependent: :destroy
+  belongs_to :user
+  scope :past_events, -> { where('date < ?', Time.now) }
+  scope :upcoming_events, -> { where('date > ?', Time.now) }
 end

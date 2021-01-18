@@ -1,40 +1,42 @@
-<%= link_to  "< Back to events", events_path, class: "back-to" %>
-<p class="flash-events"><%=flash.notice%></p>
-<h1><%= @event.name %></h1>
+<p id="notice"><%= notice %></p>
+<br>
+<br>
+<br>
 
-<label>Event Description:</label><br />
-<%= @event.description %><br /><br />
-<label>Event Date:</label><br />
-<%= @event.date.localtime.strftime("%m/%d/%Y %H:%M") %><br />
 
-<br />
-<% if @event.attendee.any? %>
-<h3>Attendees</h3>
-<ul>
-  <% @event.attendee.each do |a| %>
-    <li>
-      <%= a.username %>
-    </li>
-  <% end %>
-</ul>
-<% end %>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card border-dark">
+      <%= image_tag( "default_img.jpg", alt: "rss feed", class: "card-img-top") -%> 
+        <div class="card-body ">
+          <h4 class="card-title"> <strong>Title: </strong><%= @event.title %></h4>
+          <h6 class="card-subtitle mb-2 text-muted"><strong>Date: </strong><%= @event.date %></h6>
+          <p class="card-text"><strong>Description: </strong><%= @event.description %></p>
+          <p class="card-text"><strong>Location: </strong><%= @event.location %></p>
+          <p class="card-text"><strong>By </strong> <%= @event.user.name %></p>
+          <ul class="list-group list-group-flush">
+          <p class="card-text"><strong>Attendees:</strong></p>
+            <% @event.attendees.each do |a| %>
+              <li class="list-group-item" id="attendee"><%= a.name%></li>
+            <%end%>
+          </ul>
+          <%@e_id = @event.id%>
+          <%current_user_attended_event%>
+          <%=@go%>
+          <%=@leave%>
+          <%del_btn%>
+          <%=@del%>
+          <%= link_to 'back', events_path, class: 'btn btn-success'%>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<% if @event.date.localtime.strftime("%m/%d/%Y %H:%M") > @date %>
-  <% if session[:current_user] && !current_user_now.attended_events.where(id: @event.id).any? %>
-    <%= form_for @attendance do |f| %>
-      <%= hidden_field_tag :event_id, @event.id %>
-      <%=hidden_field_tag :user_id, session[:current_user]['id'], {id: 'user_user_id', name: 'user[user_id]'}%>
-      <%= f.submit 'Attend' %>
-    <% end %>
-  <% end %>
 
-  <% if @users_not_in.any? %>
-    <h3>Invite user</h3>
-    <%= form_for @attendance do |f| %>
-      <%= hidden_field_tag :event_id, @event.id %>
-      <%= select("user", "user_id", @users_not_in.collect {|p| [ p.username, p.id ] }, class: 'invitee') %>
-      <%= f.submit 'Invite', class: 'invite-btn' %>
-    <% end %>
-  <% end %>
-<% end %>
+
+
+
+
 

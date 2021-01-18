@@ -1,45 +1,34 @@
 class EventsController < ApplicationController
   include EventsHelper
-  include UsersHelper
+  before_action :authenticate_user, only: %i[new create]
 
   def index
-    @upcoming = Event.upcoming.sort { |a, b| b.date <=> a.date }
-    @past = Event.past.sort { |a, b| b.date <=> a.date }
-  end
-
-  def show
-    if session[:current_user]
-      @event = Event.find(params[:id])
-      @date = date_now
-      @attendance = Attendance.new
-      @users_not_in = User.all.where.not(id: @event.attendee).where.not(id: session[:current_user]['id'])
-    else
-      redirect_to sign_in_path
-    end
-  end
-
-  def create
-    user = User.find(session[:current_user]['id'])
-    @event = user.events.build(events_helper)
-
-    if @event.save
-      redirect_to events_path
-    else
-      render :new
-    end
+    @events = Event.all
+    @upcoming_events = Event.upcoming_events
+    @past_events = Event.past_events
   end
 
   def new
-    if session[:current_user]
-      @event = Event.new
+    @event = Event.new
+  end
+
+  def create
+    @event = current_user.events.build(event_params)
+    if @event.save
+      redirect_to events_url
     else
-      redirect_to sign_in_path
+      render 'new'
     end
   end
 
-  def enroll
-    @user = User.find_by(username: params[:username])
-    current_user(@user.id) if @user && params[:password] == @user.password
-    # post sign_in_path, username: 'marcelomaidden', password: '12345678'
+  def show
+    @event = Event.find(params[:id])
+    @attendance = Attendance.new
+  end
+
+  def destroy
+    @event = Event.find(params[:id])
+    @event.destroy
+    redirect_to events_url
   end
 end

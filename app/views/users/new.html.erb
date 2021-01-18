@@ -1,15 +1,23 @@
-<h1 class="register-title">Register</h1>
+<br>
+<br>
+<br>
+<br>
 
-<%= form_for @user, html:{ class: "register-form" } do |f| %>
-  <%= f.label :username, 'Username', class: "username-label" %>
-  <%= f.text_field :username, class: "username" %>
-  <%= f.label :password, 'Password', class: "password-label" %>
-  <%= f.password_field :password, class: "password" %>
-  <%= f.label :email, 'Email', class: "email-label" %>
-  <%= f.email_field :email, class: "email" %>
-  <%= f.submit 'Register', class: "register-btn" %>
+<%user_errors%>
 
-  <% @user.errors.full_messages.each do |error| %>
-    <li><%= error %></li>
-  <% end %>
+<% @user.errors.full_messages.each do |msg| %>
+  <div class="alert alert-info">
+    <%= msg %>
+  </div>
 <% end %>
+
+<div class="container">
+  <h1>Register</h1>
+  <div class="w-25 border border-secondary mt-3 p-3 rounded">
+    <%= form_for @user, url: {action: "create"} do |f| %>
+      Name: <%= f.text_field :name, placeholder: "Only first name", class:"form-control my-2 #{@uclas1}"%><br />
+      Email: <%= f.email_field :email, placeholder: "example@hotmail.com", class:"form-control my-2 #{@uclas2}" %><br />
+      <%= f.submit "Create", class: 'btn btn-success my-2' %>
+    <% end %>
+ </div>
+</div>

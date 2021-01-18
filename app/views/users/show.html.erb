@@ -1,57 +1,53 @@
-<h1>All My Events</h1>
-<div class="create-cont">
-  <div class="create-btn">
-    <%= link_to  "Create Event", new_event_path %>
+<br>
+<br>
+<br>
+<p>
+<div class="container">
+
+  <h2> <%=current_user.name %>'s created events </h2>
+  <ul>
+    <% current_user.events.each do |event| %>
+        <%= link_to event.title, event_path(event.id)%>
+    <%end%>
+  </ul>
+
+  <h2> Upcoming Events </h2>
+  <div class="row">
+    <% current_user.attended_events.upcoming_events.each do |e| %>
+    <div class="col-sm-3">
+      <div class="card border-dark">
+      <%= image_tag( "default_img.jpg", alt: "rss feed", class: "card-img-top") -%> 
+        <div class="card-body ">
+          <h4 class="card-title"><%=e.title%></h4>
+          <h6 class="card-subtitle mb-2 text-muted"><%= e.date %></h6>
+          <p class="card-text"><%= e.description %></p>
+          <p class="card-text"><%= e.location %></p>
+          <%= link_to 'More details...', event_path(e), class: 'btn btn-primary'%>
+        </div>
+      </div>
+    </div>
+    <% end %>
   </div>
+
+  <h2 class="mt-5"> Past Events </h2>
+  <div class="row">
+    <% current_user.attended_events.past_events.each do |e| %>
+    <div class="col-sm-3">
+      <div class="card border-dark">
+      <%= image_tag( "default_img.jpg", alt: "rss feed", class: "card-img-top") -%> 
+        <div class="card-body ">
+          <h4 class="card-title"><%=e.title%></h4>
+          <h6 class="card-subtitle mb-2 text-muted"><%= e.date %></h6>
+          <p class="card-text"><%= e.description %></p>
+          <p class="card-text"><%= e.location %></p>
+          <%= link_to 'more details...', event_path(e), class: 'btn btn-primary'%>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+
+  <%= link_to 'back', events_path, class: 'btn btn-success mt-4'%>
+
 </div>
 
-<% if @user.attended_events.none? && @my_events.none?%>
-  <h3>No Events have been found for you.</h3>
-<% else %>
-  <% if @upcoming.any? %>
-    <div class="upcoming-cont">
-      <h2>Upcoming Events</h2>
-      <ul class="events">
-        <% @attended_events.each do |e| %>
-          <% if e.date.localtime.strftime("%m/%d/%Y %H:%M") >= @date %>
-          <li>
-            <%= link_to  e.name , event_path(e.id) %>
-            <%= content_tag(:p, "Event Date: #{e.date.localtime.strftime("%m/%d/%Y")} Time: #{e.date.localtime.strftime("%H:%M")}", class: "date-time") %>
-          </li>
-          <% end %>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <% if @past.any? %>
-    <div class="past-cont">
-      <h2>Past Events are listed here</h2>
-      <ul class="events">
-        <% @attended_events.each do |e| %>
-          <% if e.date.localtime.strftime("%m/%d/%Y %H:%M") < @date %>
-            <li>
-              <%= link_to  e.name , event_path(e.id) %>
-              <%= content_tag(:p, "Event Date: #{e.date.localtime.strftime("%m/%d/%Y")} Time: #{e.date.localtime.strftime("%H:%M")}", class: "date-time") %>
-            </li>
-          <% end %>
-        <%end%>
-      </ul>
-    </div>
-  <% end %>
-<% end %>
-
-
-<% if @my_events.any? %>
-  <div class="my-events-cont">
-    <h2>Created Events</h2>
-    <ul class="my-events">
-      <% @my_events.each do |me| %>
-        <li>
-          <%= link_to  me.name, event_path(me.id) %>
-          <%= content_tag(:p, "Event Date: #{me.date.localtime.strftime("%m/%d/%Y")} Time: #{me.date.localtime.strftime("%H:%M")}", class: "date-time") %>
-        </li>
-      <% end %>
-    </ul>
-  </div>
-<% end %>

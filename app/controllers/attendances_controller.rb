@@ -1,28 +1,23 @@
-# rubocop:disable Layout/LineLength
-
 class AttendancesController < ApplicationController
-  def create
-    if User.find(params[:user][:user_id]).attendances.where(event_id: params[:event_id]).none?
-      user = User.find(params[:user][:user_id])
-      a = Attendance.new(event_id: params[:event_id], user_id: user.id)
-      a.save
-      msg = build_msg
-    else
-      msg = "You are already attending to #{Event.find(params[:event_id]).name}"
-    end
-    redirect_to event_path(params[:event_id]), notice: msg
+  include AttendancesHelper
+
+  def index
+    @attendances = Attendance.all
   end
 
-  private
+  def create
+    @attendance = Attendance.new(attendance_params)
 
-  def build_msg
-    if (params[:user][:user_id]).to_i == session[:current_user]['id']
-      msg = "You decided to attend #{Event.find(params[:event_id]).name}"
+    if @attendance.save
+      redirect_to event_url(params[:event_id])
     else
-      msg = "You decided to invite #{User.find(params[:user][:user_id]).username} to attend #{Event.find(params[:event_id]).name}"
+      render 'new'
     end
-    msg
+  end
+
+  def destroy
+    @attendance = Attendance.find_by(user_id: params[:user_id], event_id: params[:event_id])
+    @attendance.destroy
+    redirect_to event_path
   end
 end
-
-# rubocop:enable Layout/LineLength

@@ -1,11 +1,18 @@
-require 'date'
 class ApplicationController < ActionController::Base
-  def date_now
-    date = DateTime.now
-    date.localtime.strftime('%m/%d/%Y %H:%M')
+  include EventsHelper
+  helper_method :current_user
+  helper_method :user_sign_in?
+  helper_method :authenticate_user
+
+  def current_user
+    User.find_by(id: session[:user_id])
   end
-  helper_method :current_user_now
-  def current_user_now
-    User.find(session[:current_user]['id'])
+
+  def user_sign_in?
+    !current_user.nil?
+  end
+
+  def authenticate_user
+    redirect_to login_path if current_user.nil?
   end
 end
