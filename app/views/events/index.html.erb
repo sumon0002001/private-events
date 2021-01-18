@@ -21,7 +21,7 @@
     <% @upcoming_events.each do |e| %>
     <div class="col-sm-3 mb-4">
       <div class="card border-dark">
-      <%= image_tag( "default_img.jpg", alt: "default_image", class: "card-img-top") -%> 
+      <%= image_tag( "party.jpeg", alt: "", class: "card-img-top") -%> 
         <div class="card-body ">
           <h4 class="card-title"><%=e.title%></h4>
           <h6 class="card-subtitle mb-2 text-muted"><%= e.date %></h6>
@@ -39,7 +39,7 @@
     <% @past_events.each do |e| %>
     <div class="col-sm-3">
       <div class="card border-dark">
-      <%= image_tag( "default_img.jpg", alt: "rss feed", class: "card-img-top") -%> 
+      <%= image_tag( "party.jpeg", alt: "", class: "card-img-top") -%> 
         <div class="card-body ">
           <h4 class="card-title"><%=e.title%></h4>
           <h6 class="card-subtitle mb-2 text-muted"><%= e.date %></h6>
